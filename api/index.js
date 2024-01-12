@@ -1,6 +1,6 @@
 const express = require("express");
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://admin:pudding123@cluster0.ufkyore.mongodb.net/?retryWrites=true&w=majority";
+const uri = process.env.MongoDB_URI;
 const cors = require("cors");
 const mongoose = require('mongoose');
 const UserModel = require('./models/Users')
