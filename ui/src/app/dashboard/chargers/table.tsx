@@ -1,0 +1,149 @@
+"use client"
+
+import Image from 'next/image';
+//mport Search from '@/app/ui/search';
+import React, { useEffect, useState } from 'react';
+import Axios from 'axios';
+import clsx from 'clsx';
+import { UpdateCharger, DeleteCharger, ConnectCharger } from './buttons';
+
+
+export default  function ChargersTable() {
+  const [listOfChargers, setListOfChargers] = useState([] as any);
+
+
+  useEffect(() => {
+    Axios.get('http://localhost:3001/chargers').then((res) => {
+      setListOfChargers(res.data);
+    });
+  }, []);
+
+
+
+  return (
+    <div className="w-full">
+      <div className="mt-6 flow-root">
+        <div className="overflow-x-auto">
+          <div className="inline-block min-w-full align-middle">
+            <div className="overflow-hidden rounded-md bg-gray-50 p-2 md:pt-0">
+              <div className="md:hidden">
+                {listOfChargers?.map((charger: any) => (
+                  <div
+                    key={charger._id}
+                    className="mb-2 w-full rounded-md bg-white p-4"
+                  >
+                    <div className="flex items-center justify-between border-b pb-4">
+                      <div>
+                        <div className="mb-2 flex items-center">
+                          <div className="flex items-center gap-3">
+                            <Image
+                              src="/electric-car-e-plug.webp"
+                              className="rounded-full"
+                              alt={charger.name}
+                              width={28}
+                              height={28}
+                            />
+                            <p>{charger.name}</p>
+                          </div>
+                        </div>
+                        <p className="text-sm text-gray-500">
+                          {charger.type}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex w-full items-center justify-between border-b py-5">
+                      <div className="flex w-1/2 flex-col">
+                        <p className="text-xs">Power</p>
+                        <p className="font-medium">{charger.power}<p className='text-gray-200'>kW</p></p>
+                      </div>
+                      <div className="flex w-1/2 flex-col">
+                        <p className="text-xs">Geo-Location</p>
+                        <p className="font-medium">
+                          {(charger.longitude && charger.longitude["$numberDecimal"])} <br/>
+                          {(charger.latitude && charger.latitude["$numberDecimal"])}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="pt-4 text-sm">
+                      <p className = {clsx('',
+                      {
+                        'text-red-600' : charger.status === "occupied",
+                        'text-blue-600' : charger.status === "faulted",
+                        'text-green-600' : charger.status === "available",
+                        'text-yellow-600' : charger.status ==="preparing",
+                      })}>{charger.status}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <table className="hidden min-w-full rounded-md text-gray-900 md:table">
+                <thead className="rounded-md bg-gray-50 text-left text-sm font-normal">
+                  <tr>
+                    <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
+                      Name
+                    </th>
+                    <th scope="col" className="px-3 py-5 font-medium">
+                      Type
+                    </th>
+                    <th scope="col" className="px-3 py-5 font-medium">
+                      Power
+                    </th>
+                    <th scope="col" className="px-3 py-5 font-medium">
+                      Status
+                    </th>
+                    <th scope="col" className="px-4 py-5 font-medium">
+                      Geo-Location
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody className="divide-y divide-gray-200 text-gray-900">
+                  {listOfChargers.map((charger:any) => (
+                    <tr key={charger._id} className="group">
+                      <td className="whitespace-nowrap bg-white py-5 pl-4 pr-3 text-sm text-black group-first-of-type:rounded-md group-last-of-type:rounded-md sm:pl-6">
+                        <div className="flex items-center gap-3">
+                          <Image
+                            src="/electric-car-e-plug.webp"
+                            className="rounded-full"
+                            alt={charger.name}
+                            width={40}
+                            height={40}
+                          />
+                          <p>{charger.name}</p>
+                        </div>
+                      </td>
+                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
+                        {charger.type}
+                      </td>
+                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
+                        <p className='flex flex-wrap'>{charger.power}<p className='text-gray-200'> kW</p></p>
+                      </td>
+                      <td className={clsx('whitespace-nowrap bg-white px-4 py-5 text-sm uppercase ',
+                      {
+                        'text-red-600' : charger.status === "occupied",
+                        'text-blue-600' : charger.status === "faulted",
+                        'text-green-600' : charger.status === "available",
+                        'text-yellow-600' : charger.status ==="preparing",
+                      })}>
+                        {charger.status}
+                      </td>
+                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm group-first-of-type:rounded-md group-last-of-type:rounded-md">
+                        {(charger.longitude && charger.longitude["$numberDecimal"])} <br/>
+                        {(charger.latitude && charger.latitude["$numberDecimal"])} 
+                      </td>
+                      <td className="flex justify-center gap-2 px-1 py-4 text-sm"> 
+                        <ConnectCharger id={charger._id} />
+                        <UpdateCharger id={charger._id} />
+                        <DeleteCharger id={charger._id} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
