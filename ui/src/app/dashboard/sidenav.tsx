@@ -3,7 +3,7 @@ import NavLinks from '@/app/dashboard/nav-links';
 import { PowerIcon,BoltIcon } from '@heroicons/react/24/outline';
 import { auth, signOut } from '@/auth';
 import { useSession } from 'next-auth/react';
-import Session from '../session';
+import Session from './session';
 
 
 export default function SideNav() {

@@ -1,4 +1,3 @@
-const { Long, Double, Decimal128 } = require("mongodb");
 const mongoose = require("mongoose");
 
 //A frozen object can no longer be changed;
@@ -28,15 +27,19 @@ const ChargerSchema = new mongoose.Schema({
         default: 'available',
         required: false
     },
-    latitude:{
-        type: Decimal128,
-        required: false
+    position: {
+        lat: { type: Number, required: false },
+        lng: { type: Number,  required: false }
     },
-    longitude:{
-        type: Decimal128,
-        required: false
-    },
+    user: {
+        type: String,
+        require: false
+    }
 })
+
+ChargerSchema.virtual('full_position').get(function() {
+    return this.position.lat + '\n ' + this.position.lng;
+  });
 
 const ChargerModel = mongoose.model("chargers", ChargerSchema)
 module.exports = ChargerModel;

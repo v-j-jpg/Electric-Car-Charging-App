@@ -205,7 +205,7 @@ export default function Form() {
           </div>
         </div>
       </div>
-      <div className="mt-6 flex justify-end gap-4">
+      <div className="mt-2 flex justify-end gap-4">
         <Link href="/dashboard/users" className="flex h-10 items-center no-underline rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200">
           Cancel
         </Link>

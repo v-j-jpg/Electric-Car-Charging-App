@@ -12,7 +12,6 @@ import {
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
 
-import { useState } from "react";
 
 type PlacesProps = {
     setCurrentPosition: (position: google.maps.LatLngLiteral) => void;
@@ -38,7 +37,7 @@ export default function Places({ setCurrentPosition }: PlacesProps) {
     };
 
     return (
-        <div>
+        <div className="places">
             <h6 className="pb-4">Your location:</h6>
             <Combobox onSelect={handleSelect}>
                 <ComboboxInput

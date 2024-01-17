@@ -100,31 +100,31 @@ export default function Form() {
             <CpuChipIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
         </div>
-        {/* Charger Type */}
+        {/* Charger latitude */}
         <div className="mb-4">
           <label htmlFor="charger" className="mb-2 block text-sm font-medium">
             Geolocation of the charger
           </label>
           <div className="relative">
             <input
-              id="longitude"
-              name="longitude"
+              id="lat"
+              name="lat"
               type="text"
-              placeholder="Enter the height"
+              placeholder="Enter the latitude"
               className="peer block w-50 rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               onChange={handleChange}
             />
             <GlobeAsiaAustraliaIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
         </div>
-        {/* Charger geo-location width */}
+        {/* Charger geo-location longitude */}
         <div className="mb-4">
           <div className="relative">
             <input
-              id="latitude"
-              name="latitude"
+              id="lng"
+              name="lng"
               type="text"
-              placeholder="Enter the width"
+              placeholder="Enter the longitude"
               className="peer block w-50 rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               onChange={handleChange}
             />

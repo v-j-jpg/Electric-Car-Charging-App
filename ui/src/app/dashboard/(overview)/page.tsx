@@ -1,8 +1,4 @@
-import { Card } from '@/app/dashboard/cards';
-import RevenueChart from '@/app/dashboard/revenue-chart';
-import LatestInvoices from '@/app/dashboard/latest-invoices';
-import GoogleMapComponent from '@/app/map/page';
-import MapComponent from '@/app/map/page';
+import MapComponent from './map';
  
 export default async function Page() {
   const mapCenter = { lat: 37.7749, lng: -122.4194 }; // Initial map center

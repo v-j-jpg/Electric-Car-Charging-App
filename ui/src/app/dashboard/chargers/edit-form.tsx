@@ -98,7 +98,7 @@ const updateChargerId = UpdateCharger.bind(null, charger._id);
                 name="lat"
                 type="text"
                 placeholder="Enter the latitude"
-                defaultValue={charger?.position?.lat}
+                defaultValue={(charger.lat && charger.lat["$numberDecimal"])} 
                 className="peer block w-50 rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               />
             <GlobeAsiaAustraliaIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
@@ -112,7 +112,7 @@ const updateChargerId = UpdateCharger.bind(null, charger._id);
                 name="lng"
                 type="text"
                 placeholder="Enter the longitude"
-                defaultValue={charger?.position?.lng}
+                defaultValue={(charger.lng && charger.lng["$numberDecimal"])} 
                 className="peer block w-50 rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 
               />

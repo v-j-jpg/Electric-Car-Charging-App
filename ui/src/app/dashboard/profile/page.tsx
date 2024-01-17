@@ -1,6 +1,6 @@
 import Form from '@/app/dashboard/users/[id]/edit/edit-form';
 import Breadcrumbs from '@/app/dashboard/breadcrumbs';
-import Session from '@/app/session';
+import Session from '@/app/dashboard/session';
 import { auth,signIn } from '@/auth';
 import { getUser } from '@/lib/actions';
 
@@ -22,7 +22,7 @@ export  default async function Page() {
         ]}
       /> 
       <p className='flex justify-start pb-2'>{session?.user?.name.first}&apos;s profile</p>
-      <Form userID = "659c4efd89d580bfc83ef71f" />
+      <Form userID = {user._id} />
     </main>
   );
 }

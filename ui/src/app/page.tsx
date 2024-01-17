@@ -15,8 +15,8 @@ export default function Home() {
       <div className="mt-4 flex grow flex-col gap-4 md:flex-row">
         <div className="flex flex-col justify-center gap-6 rounded-lg bg-gray-50 px-6 py-10 md:w-2/5 md:px-20">
           <p className={`text-xl text-gray-800 md:text-3xl md:leading-normal`}>
-            <strong>Welcome to a power charging application.</strong> 
-            <p>Please login or sign up! </p> 
+            <strong>Welcome to the power charging application.</strong> 
+            <span> Please login or sign up! </span> 
           </p>
           <div className='flex items-center'>
               <Link href="/login" className="no-underline w-50 gap-5 self-start rounded-lg bg-green-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-yellow-400 md:text-base">

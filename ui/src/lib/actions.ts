@@ -21,11 +21,7 @@ export async function authenticate(
   formData: FormData,
 ) {
   try {
-    console.log("sss")
     await signIn('credentials', formData);
-    console.log(formData + "forma");
-    //redirect('/dashboard/');
-
   } catch (error) {
     console.log(error)
     if (error instanceof AuthError) {
@@ -52,19 +48,22 @@ const FormSchema = z.object({
   name: z.string({ required_error : 'Please enter a name.'}),
   power: z.coerce.number().gt(0, {message: 'Please enter an amount greater then 0.'}),
   type: z.coerce.string(),
-  latitude: z.any(),
-  longitude: z.any(),
+  lat: z.any(),
+  lng: z.any(),
 });
 const CreateCharger = FormSchema.omit({})
 
 export async function createCharger(prevState: State, formData: FormData) {
+  const { user } = auth();
+
+  console.log(user);
 
   const validatedFields = CreateCharger.safeParse({
     name: formData.get('name'),
     power: formData.get('power'),
     type: formData.get('type'),
-    latitude: formData.get('latitude'),
-    longitude: formData.get('longitude'),
+    lat: formData.get('lat'),
+    lng: formData.get('lng'),
   });
 
   if (!validatedFields.success) {
@@ -99,8 +98,8 @@ export async function UpdateCharger(id: any, formData: FormData) {
     name: formData.get('name'),
     power: formData.get('power'),
     type: formData.get('type'),
-    latitude: formData.get('latitude'),
-    longitude: formData.get('longitude'),
+    lat: formData.get('lat'),
+    lng: formData.get('lng'),
   });
 
   try {
@@ -119,6 +118,24 @@ export async function UpdateCharger(id: any, formData: FormData) {
 
 export async function DeleteChargerAction(id: number) {
   Axios.delete(`http://localhost:3001/chargers/id=${id}`).catch(function (err) {
+    return err;
+  });
+
+  revalidatePath('/dashboard/chargers');
+  redirect('/dashboard/chargers');
+}
+
+export async function ConnectChargerAction(id: number, user: any) {
+  Axios.patch(`http://localhost:3001/chargers/id=${id}`, {status: 'occupied', user: user}).catch(function (err) {
+    return err;
+  });
+
+  revalidatePath('/dashboard/chargers');
+  redirect('/dashboard/chargers');
+}
+
+export async function DisconnectChargerAction(id: number) {
+  Axios.patch(`http://localhost:3001/chargers/id=${id}`, {status: 'available', user: ''}).catch(function (err) {
     return err;
   });
 
@@ -144,7 +161,6 @@ const CreateUser = FormSchemaUser.omit({})
 export async function createUser(prevState: State, formData: FormData) {
 
   const validatedFields = CreateUser.safeParse(Object.fromEntries(formData.entries()));
-  console.log(validatedFields.data)
 
   if (!validatedFields.success) {
     return {

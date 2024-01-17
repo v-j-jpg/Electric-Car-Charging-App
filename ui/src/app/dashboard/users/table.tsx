@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import { DeleteUser, UpdateUser } from './buttons';
 
-export default  function CustomersTable() {
+export default  function CustomersTable({session}) {
   const [listOfUsers, setListOfUsers] = useState([] as any);
 
   useEffect(() => {
@@ -121,8 +121,12 @@ export default  function CustomersTable() {
                         {customer.carBatteryPercentage}%
                       </td>
                       <td className="flex justify-center gap-2 px-1 py-4 text-sm">
-                        <UpdateUser id={customer._id} />
-                        <DeleteUser id={customer._id} />
+                        {session?.user?.image == 'admin' &&
+                          <>
+                            <UpdateUser id={customer._id} />
+                            <DeleteUser id={customer._id} /> 
+                          </>
+                        }
                       </td>
                     </tr>
                   ))}

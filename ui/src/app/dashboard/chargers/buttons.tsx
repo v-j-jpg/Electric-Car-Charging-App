@@ -1,6 +1,6 @@
-import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { MinusIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { DeleteChargerAction } from '@/lib/actions';
+import { DeleteChargerAction, ConnectChargerAction, DisconnectChargerAction } from '@/lib/actions';
 
 export function CreateCharger() {
   return (
@@ -37,13 +37,27 @@ export function DeleteCharger({ id }: { id: any }) {
   );
 }
 
-export function ConnectCharger({ id }: { id: string }) {
+export function ConnectCharger({ id, user }: { id: any, user:any}){
+
+  const connectChargerWithId = ConnectChargerAction.bind(null, id, user?.email);
   return (
-    <Link
-      href={`/dashboard/chargers/${id}/connect`}
-      className="rounded-md border bg-green-500 p-2 hover:bg-green-100"
-    >
-      <PlusIcon className="w-5" />
-    </Link>
+    <form action={connectChargerWithId}>
+      <button className="rounded-md border bg-green-500 p-2 hover:bg-green-100">
+        <span className='sr-only'>Connect</span>
+        <PlusIcon className="w-5 " />
+      </button>
+    </form>
+  );
+}
+export function DisconnectCharger({ id }: { id: any}){
+  
+  const disconnectChargerWithId = DisconnectChargerAction.bind(null, id);
+  return (
+    <form action={disconnectChargerWithId}>
+      <button className="rounded-md border bg-red-500 p-2 hover:bg-red-100">
+        <span className='sr-only'>Disconnect</span>
+        <MinusIcon className="w-5 " />
+      </button>
+    </form>
   );
 }

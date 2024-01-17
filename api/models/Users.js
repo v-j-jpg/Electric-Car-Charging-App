@@ -53,7 +53,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    role: {
+    image: { //Users role, but since its not posible to override nextjs-auth methods I left it as image
       type: String,
       enum: Object.values(Role),
       default: 'user',

@@ -1,5 +1,5 @@
 import { signIn } from "next-auth"
-
+     
 const GoogleButton = () => {
   return (
     <button

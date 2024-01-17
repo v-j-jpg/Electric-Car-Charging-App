@@ -1,12 +1,11 @@
 const express = require("express");
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = process.env.MongoDB_URI;
+const uri = process.env.MONGODB_URI;
 const cors = require("cors");
 const mongoose = require('mongoose');
 const UserModel = require('./models/Users')
 const ChargerModel = require('./models/Chargers')
 const {hashSync, compare} = require('bcryptjs');
-//import { hashSync, compare } from 'bcryptjs';
+const SessionModel = require("./models/Session");
 
 const app = express();
 const saltlength = 10; //default lenght
@@ -35,6 +34,15 @@ app.get("/chargers", async (req, res) => {
   });
 })
 
+app.get("/chargers/available", async (req, res) => {
+
+  ChargerModel.find({status: 'available'}).then(function (model){
+    res.json(model);
+  }).catch(function (err) {
+    res.json(err);
+  });
+})
+
 //Create
 app.post("/users/create", async (req, res) => {
 
@@ -49,7 +57,13 @@ app.post("/users/create", async (req, res) => {
 })
 
 app.post("/chargers/create", async (req, res) => {
-  const newCharger = new ChargerModel(req.body);
+
+  const charger = {...req.body};
+  charger.position = { lat: parseFloat(charger.lat), lng: parseFloat(charger.lng)};
+
+  console.log(typeof charger.position.lat)
+
+  const newCharger = new ChargerModel(charger);
   await newCharger.save();
   res.json(newCharger);
 })
@@ -58,8 +72,14 @@ app.post("/chargers/create", async (req, res) => {
 app.patch("/chargers/:id", async (req, res) => {
   const  id  = (req.params.id).slice(3);
 
-  ChargerModel.findByIdAndUpdate(id, req.body, {new: true}).then(function(model) {
+  const charger = {...req.body};
+  charger.position = { lat: parseFloat(charger.lat), lng: parseFloat(charger.lng)};
+  delete charger.lat && delete charger.lng;
+  console.log(charger)
+
+  ChargerModel.findByIdAndUpdate(id, req.body).then(function(model) {
     res.json(model);
+    console.log(model);
   }).catch(function(err) {
       res.json( err);
     })
@@ -69,8 +89,7 @@ app.patch("/users/:id", async (req, res) => {
   const  id  = (req.params.id).slice(3);
 
   var user = {...req.body};
-  user.name = { first: user.first, last: user.last};  
-  console.log(user);
+  user.name = { first: user.first, last: user.last};
   user.password = hashSync(user.password, saltlength);
 
   UserModel.findByIdAndUpdate(id, req.body, {new: true}).then(function(model) {
@@ -103,7 +122,7 @@ app.get("/users/id/:id", async (req, res) => {
 //Search by email
 app.get("/users/email/:email", async (req, res) => {
   const  email  = (req.params.email).slice(6);
-  console.log(email);
+
   UserModel.findOne({email: email}).then(function(model) {
     res.json(model);
   }).catch(function(err) {
@@ -114,6 +133,7 @@ app.get("/users/email/:email", async (req, res) => {
 //Delete
 app.delete("/chargers/:id", async (req, res) => {
   const  id  = (req.params.id).slice(3);
+
   ChargerModel.findByIdAndDelete(id).then(function() {
     res.json("Success");
   }).catch(function(err) {
@@ -125,6 +145,15 @@ app.delete("/users/:id", async (req, res) => {
   UserModel.findByIdAndDelete(id).then().catch(function(err) {
       res.json(err);
     })
+})
+
+//Connect to a charger
+app.post("/session/create", async (req, res) => {
+
+  var session = {...req.body};
+  const newSession = new SessionModel(session);
+  await newSession.save();
+  res.json(newSession);
 })
 
 app.listen(3001, ()=> {

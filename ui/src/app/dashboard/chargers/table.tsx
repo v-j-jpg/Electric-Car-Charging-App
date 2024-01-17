@@ -5,12 +5,11 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import clsx from 'clsx';
-import { UpdateCharger, DeleteCharger, ConnectCharger } from './buttons';
+import { UpdateCharger, DeleteCharger, ConnectCharger, DisconnectCharger } from './buttons';
 
 
-export default  function ChargersTable() {
+export default function ChargersTable({session: session}) {
   const [listOfChargers, setListOfChargers] = useState([] as any);
-
 
   useEffect(() => {
     Axios.get('http://localhost:3001/chargers').then((res) => {
@@ -18,9 +17,8 @@ export default  function ChargersTable() {
     });
   }, []);
 
-
-
   return (
+    
     <div className="w-full">
       <div className="mt-6 flow-root">
         <div className="overflow-x-auto">
@@ -58,9 +56,8 @@ export default  function ChargersTable() {
                       </div>
                       <div className="flex w-1/2 flex-col">
                         <p className="text-xs">Geo-Location</p>
-                        <p className="font-medium">
-                          {(charger.longitude && charger.longitude["$numberDecimal"])} <br/>
-                          {(charger.latitude && charger.latitude["$numberDecimal"])}
+                        <p className="font-medium">                        
+                        {charger.full_position}
                         </p>
                       </div>
                     </div>
@@ -128,13 +125,19 @@ export default  function ChargersTable() {
                         {charger.status}
                       </td>
                       <td className="whitespace-nowrap bg-white px-4 py-5 text-sm group-first-of-type:rounded-md group-last-of-type:rounded-md">
-                        {(charger.longitude && charger.longitude["$numberDecimal"])} <br/>
-                        {(charger.latitude && charger.latitude["$numberDecimal"])} 
+                        {(charger.position && charger.position['lng'])} <br/> {(charger.position && charger.position['lat'])}
                       </td>
                       <td className="flex justify-center gap-2 px-1 py-4 text-sm"> 
-                        <ConnectCharger id={charger._id} />
-                        <UpdateCharger id={charger._id} />
-                        <DeleteCharger id={charger._id} />
+                      
+                        {charger.status ==='available' && <ConnectCharger id={charger._id} user={session?.user} />}
+                        {charger.status === 'occupied' && charger.user === session?.user?.email &&  <DisconnectCharger id={charger._id} />}
+                        
+                        {session?.user?.image === "admin" &&
+                          <>
+                          <UpdateCharger id={charger._id} />
+                          <DeleteCharger id={charger._id} /> 
+                          </>
+                        }
                       </td>
                     </tr>
                   ))}
