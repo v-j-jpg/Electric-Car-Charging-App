@@ -3,9 +3,12 @@ import Table from './table';
 import Link from 'next/link';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { auth } from '@/auth';
+import { getUsers } from '@/lib/data';
 
 async function Users() {
   const session = await auth()
+  const listOfUsers = await getUsers();
+
   return (
     <>
     <h1 className={"mb-8 text-xl md:text-2xl"}>
@@ -19,8 +22,7 @@ async function Users() {
         </Link>
         <PlusCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
         </div>}
-    <Table session={session}/>
-    
+    <Table session={session} listOfUsers={listOfUsers}/>
     </>
   )
 }

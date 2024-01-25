@@ -1,12 +1,10 @@
-'use client'
 
+import { getUserById } from '@/lib/data';
 import Form from './edit-form';
 import Breadcrumbs from '@/app/dashboard/breadcrumbs';
-import { auth } from "@/auth"
 
-export default  function Page({params}: {params: {id: string}}) {
-  //const session = await auth();
-  
+export default  async function Page({params}: {params: {id: Number}}) {
+  const user = await getUserById(params.id)
   return (
     <main>
       <Breadcrumbs
@@ -20,7 +18,7 @@ export default  function Page({params}: {params: {id: string}}) {
         ]}
       />
     
-     <Form userID = {params.id}/>
+     <Form user={user}/>
     </main>
   );
 }

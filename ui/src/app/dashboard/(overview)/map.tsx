@@ -1,42 +1,22 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { APIProvider, Map, AdvancedMarker, Pin, InfoWindow, useMapsLibrary, useMap, useMarkerRef, useAdvancedMarkerRef, Marker } from '@vis.gl/react-google-maps'
-
-import Axios from 'axios'
+import { Card, CardActions, CardContent, Divider, FormControlLabel, FormGroup, Grid, List, ListItemText, Switch, Typography, tableBodyClasses } from '@mui/material';
 import Places from './places'
-import { list } from 'postcss'
-import { any, map } from 'zod'
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 type DirectionsResult = google.maps.DirectionsResult;
 
-function Markers() { }
 
-
-export default function MapComponent() {
-    const position = useMemo<LatLngLiteral>(() => ({ lat: 45.267136, lng: 19.833549 }), []); //Set the position of Novi Sad 
+export default function MapComponent({ listOfChargers: listOfChargers }) {
+    const position = useMemo<LatLngLiteral>(() => ({ lat: 45.267136, lng: 19.833549 }), []); //Sets the position of Novi Sad 
     const [currentPosition, setCurrentPosition] = useState<LatLngLiteral>();
     const [directions, setDirections] = useState<DirectionsResult>();
     const [open, setOpen] = useState(false);
     const [markerRef, marker] = useAdvancedMarkerRef();
-
-    //const mapRef = useRef();
-    //const onLoad = useCallback((map) => (mapRef.current = map), []);
-
-    //ImportChargers
-    const _chargers: Array<LatLngLiteral> = [];
-    const [listOfChargers, setListOfChargers] = useState([] as any);
-
-
-    useEffect(() => {
-        Axios.get('http://localhost:3001/chargers/available').then((res) => {
-            setListOfChargers(res.data);
-        });
-    }, []);
-
-    //return _chargers;
-
+    const [showAvailableOnly, setShowAvailableOnly] = useState(false);
+    let filteredChargers = showAvailableOnly ? listOfChargers.filter(charger => charger.status === 'available') : listOfChargers;
 
     return (<>
         <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY} library={['places']}>
@@ -53,7 +33,7 @@ export default function MapComponent() {
                         </InfoWindow>}
 
                     {/* Sets the marker to the location of chargers */}
-                    {listOfChargers.map((charger: any) => (
+                    {filteredChargers?.map((charger: any) => (
                         <>
                             <AdvancedMarker
                                 key={charger._id}
@@ -69,16 +49,20 @@ export default function MapComponent() {
                     ))}
 
                 </Map>
-                <h2 className={`mb-4 text-xl md:text-2xl`}>
-                    Charging Options
-                </h2>
-                <div className="flex w-full md:col-span-4">
-                    <div className="flex-1 w-1/6 rounded-xl bg-gray-50 p-2 mb-2">
-                        <PlacesLibrary />
-                    </div>
-                    <div className="flex-1 w-1/2 justify-between rounded-xl bg-gray-50 p-4">
+                <div>
+                    <FormGroup>
+                        <FormControlLabel control={<Switch color='secondary' checked={showAvailableOnly}
+                            onChange={() => setShowAvailableOnly(!showAvailableOnly)}
+                            inputProps={{ 'aria-label': 'controlled' }} />} label="Show only available chargers" />
+                    </FormGroup>
+                    <Card sx={{ minWidth: 275 }}>
+                        <CardActions>
+                            <PlacesLibrary />
+                        </CardActions>
+                        <br />
                         {currentPosition && <Directions />}
-                    </div>
+                    </Card>
+
                 </div>
             </div>
         </APIProvider>
@@ -115,7 +99,7 @@ export default function MapComponent() {
 
             distanceService?.getDistanceMatrix({
                 origins: [currentPosition],
-                destinations: listOfChargers.map((charger) => charger.position),
+                destinations: filteredChargers.map((charger) => charger.position),
                 travelMode: google.maps.TravelMode.DRIVING,
                 unitSystem: google.maps.UnitSystem.METRIC,
                 avoidHighways: false,
@@ -126,8 +110,9 @@ export default function MapComponent() {
             })
         }, [distanceService])
 
-        let destinations = destinationAddresses.map((address, index) => ({ address: address, duration: distance[index]['duration'].text, distance: distance[index]['distance'].text }) )
-         
+        //Merge destination addresses with their distance and duation
+        let destinations = destinationAddresses.map((address, index) => ({ address: address, duration: distance[index]['duration'].text, distance: distance[index]['distance'].text }))
+
         // Sort destinations by distance
         destinations = destinations.sort((a, b) => {
             const distanceA = parseFloat(a.distance.replace(' km', ''));
@@ -141,7 +126,7 @@ export default function MapComponent() {
 
             directionsService.route({
                 origin: currentPosition,
-                destination:destinations[0]?.address || closestCharger(geometryLibrary, currentPosition),
+                destination: destinations[0]?.address || closestCharger(geometryLibrary, currentPosition),
                 travelMode: google.maps.TravelMode.DRIVING,
                 drivingOptions: {
                     departureTime: new Date(Date.now()),
@@ -163,32 +148,56 @@ export default function MapComponent() {
 
         return (
             <div className='directions'>
-                <h2><strong>{selected.summary} path</strong></h2>
-                <p><strong>From</strong> {leg.start_address.split(",")[0]} <strong>to</strong> {leg.end_address.split(",")[0]}</p>
-                <p className='bg-yellow-50'>Distance: {leg.distance?.text}</p>
-                <p className='bg-yellow-50'>Duration: {leg.duration?.text}</p>
-            
-            {/** Other routes for the driving path    
-                <div className='pl-5 hide'>
-                    <ul className='list-disc'>
-                        {routes.map((route, index) => (
-                            <li key={index + route.summary}>
-                                <button onClick={() => setRouteIndex(index)}>{route.summary}</button>
-                            </li>))}
-                    </ul>
-                </div>*/}
-                
-                <div className='bg-yellow-100'>Closest charger: {destinations[0]?.address} {destinations[0]?.duration} {destinations[0]?.distance}</div>
-                <h2 className='text-green-500 mt-2'>Other available options:</h2>
-                <div>
-                    <ul className='list-disc'>
-                        {destinations.slice(1,6).map((destination, index) => (
-                            <li key={destination.address}>
-                               
-                                <p>{destination.address} <strong>Distance:</strong> {destination.distance} <strong>Duration:</strong> {destination.duration}</p>
-                            </li>))}
-                    </ul>
-                </div>
+                <Grid container display={'flex'} wrap='wrap' spacing={1}>
+                    <Grid item md={6}>
+                        <Card sx={{ minWidth: 275 }}>
+                            <CardContent>
+                                <h2 className='font-bold text-l'>{selected.summary} route</h2>
+                                <p><strong>From</strong> {leg.start_address.split(",")[0]} <strong>to</strong> {leg.end_address.split(",")[0]}</p>
+                                <Typography variant="body2" >
+                                    <p className='bg-yellow-50'><strong>Distance: </strong>{leg.distance?.text}</p>
+                                    <p className='bg-yellow-50'><strong>Duration: </strong>{leg.duration?.text}</p>
+                                </Typography>
+                            </CardContent>
+                            <CardActions>
+                                <List> 
+                                    <h2>Other possible routes:</h2>
+                                    {routes.map((route, index) => (
+                                        <>
+                                            <ListItemText key={index + route.summary} primary={<button onClick={() => setRouteIndex(index)}>{route.summary}</button>} />
+                                            <Divider />
+                                        </>
+                                    ))}
+                                </List>
+                            </CardActions>
+                        </Card>
+                    </Grid>
+                    <Grid item md={6}>
+                        <Card sx={{ minWidth: 275 }}>
+                            <CardContent>
+                                Closest charger:
+                                <div className='bg-yellow-100'>
+                                    <Typography variant="body1" gutterBottom> {destinations[0]?.address} </Typography>
+                                    <Typography variant="body2" gutterBottom>
+                                        <strong>Duration:</strong> {destinations[0]?.duration}
+                                        <strong> Distance:</strong> {destinations[0]?.distance}
+                                    </Typography>
+                                </div>
+                                <h2 className='text-green-500 mt-2'>Other available chargers:</h2>
+                                <div>
+                                    <List sx={{ maxWidth: 360 }}>
+                                        {destinations.slice(1, 6).map((destination, index) => (
+                                            <>
+                                                <ListItemText key={index + destination.address} primary={destination.address}
+                                                    secondary={<p><strong>Distance:</strong> {destination.distance} <strong>Duration:</strong> {destination.duration}</p>} />
+                                                <Divider />
+                                            </>))}
+                                    </List>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                </Grid>
             </div>)
     }
 
@@ -198,9 +207,7 @@ export default function MapComponent() {
 
         useEffect(() => {
             if (!placesLibrary) return;
-
             const svc = new placesLibrary.PlacesService(document.getElementById('places') as HTMLDivElement);
-
         }, [placesLibrary]);
 
         useEffect(() => {
@@ -214,48 +221,11 @@ export default function MapComponent() {
             />);
     }
 
-    function closestCharger(geometryLibrary, targetPosition: LatLngLiteral) {
-
-        return listOfChargers?.reduce(function (prev, curr) {
-
-            var cpos = geometryLibrary.spherical.computeDistanceBetween(targetPosition, curr.position);
-            var ppos = geometryLibrary.spherical.computeDistanceBetween(targetPosition, prev.position);
-
+    function closestCharger(geometryLibrary, targetPosition: { lat: Number, lng: Number}) {
+        return filteredChargers?.reduce(function (prev, curr) {
+            var cpos = geometryLibrary.spherical.computeDistanceBetween(targetPosition, (curr.position.lat && curr.position.lng && curr.position));
+            var ppos = geometryLibrary.spherical.computeDistanceBetween(targetPosition, (prev.position.lat && prev.position.lng && prev.position));
             return cpos < ppos ? curr : prev;
-
         }).position;
-
     }
-
-
-    //Circles colours
-    const defaultOptions = {
-        strokeOpacity: 0.5,
-        strokeWeight: 2,
-        clickable: false,
-        draggable: false,
-        editable: false,
-        visible: true,
-    };
-    const closeOptions = {
-        ...defaultOptions,
-        zIndex: 3,
-        fillOpacity: 0.05,
-        strokeColor: "#8BC34A",
-        fillColor: "#8BC34A",
-    };
-    const middleOptions = {
-        ...defaultOptions,
-        zIndex: 2,
-        fillOpacity: 0.05,
-        strokeColor: "#FBC02D",
-        fillColor: "#FBC02D",
-    };
-    const farOptions = {
-        ...defaultOptions,
-        zIndex: 1,
-        fillOpacity: 0.05,
-        strokeColor: "#FF5252",
-        fillColor: "#FF5252",
-    };
-} 
+}

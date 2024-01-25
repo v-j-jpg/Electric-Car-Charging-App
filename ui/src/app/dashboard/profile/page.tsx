@@ -1,13 +1,12 @@
 import Form from '@/app/dashboard/users/[id]/edit/edit-form';
 import Breadcrumbs from '@/app/dashboard/breadcrumbs';
-import Session from '@/app/dashboard/session';
 import { auth,signIn } from '@/auth';
-import { getUser } from '@/lib/actions';
+import { getUserByEmail } from '@/lib/data';
 
 
 export  default async function Page() {
     const session = await auth()
-    const user = await getUser(session?.user?.email);
+    const user = await getUserByEmail(session?.user?.email);
 
   return (
     <main>
@@ -22,7 +21,7 @@ export  default async function Page() {
         ]}
       /> 
       <p className='flex justify-start pb-2'>{session?.user?.name.first}&apos;s profile</p>
-      <Form userID = {user._id} />
+      <Form user={user} />
     </main>
   );
 }

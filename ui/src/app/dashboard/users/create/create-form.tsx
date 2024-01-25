@@ -147,18 +147,18 @@ export default function Form() {
             </div>
           </div>
         </div>
-         {/*  Gender */}
+         {/*  batteryCapacity */}
          <div className="mb-4">
-          <label htmlFor="gender" className="mb-2 block text-sm font-medium">
-            Gender
+          <label htmlFor="batteryCapacity" className="mb-2 block text-sm font-medium">
+            batteryCapacity
           </label>
           <div className="relative mt-2 rounded-md">
             <div className="relative">
               <input
-                id="gender"
-                name="gender"
+                id="batteryCapacity"
+                name="batteryCapacity"
                 type="text"
-                placeholder="Enter your gender..."
+                placeholder="Enter your battery capacity..."
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 onChange={handleChange}
               />
@@ -187,14 +187,14 @@ export default function Form() {
         </div>
          {/*  Car Info */}
          <div className="mb-4">
-          <label htmlFor="carBatteryPercentage" className="mb-2 block text-sm font-medium">
+          <label htmlFor="batteryPercentage" className="mb-2 block text-sm font-medium">
             Car Battery Percentage
           </label>
           <div className="relative mt-2 rounded-md">
             <div className="relative">
               <input
-                id="carBatteryPercentage"
-                name="carBatteryPercentage"
+                id="batteryPercentage"
+                name="batteryPercentage"
                 type="text"
                 placeholder="Enter your car battery percentage"
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"

@@ -19,11 +19,11 @@ export default function Home() {
             <span> Please login or sign up! </span> 
           </p>
           <div className='flex items-center'>
-              <Link href="/login" className="no-underline w-50 gap-5 self-start rounded-lg bg-green-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-yellow-400 md:text-base">
+              <Link href="/login" className="no-underline w-50 gap-5 self-start rounded-lg bg-lime-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-yellow-400 md:text-base">
             <span>Log in</span>
             
           </Link>
-          <Link href="/signup" className="no-underline w-50 gap-5 ml-5 self-start rounded-lg bg-green-800 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-yellow-400 md:text-base">
+          <Link href="/signup" className="no-underline w-50 gap-5 ml-5 self-start rounded-lg bg-lime-800 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-yellow-400 md:text-base">
             <span>Sign up</span>
           </Link>
           </div>

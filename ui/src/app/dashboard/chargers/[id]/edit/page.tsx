@@ -1,11 +1,10 @@
-'use client'
-
+import { getChargersById } from '@/lib/data';
 import Form from './edit-form';
 import Breadcrumbs from '@/app/dashboard/breadcrumbs';
-import { Suspense } from 'react';
 
-export default  function Page({params}: {params: {id: string}}) {
- 
+
+export default  async function Page({params}: {params: {id: number}}) {
+ const charger = await getChargersById(params.id);
   return (
     <main>
       <Breadcrumbs
@@ -19,7 +18,7 @@ export default  function Page({params}: {params: {id: string}}) {
         ]}
       />
      
-     <Form chargerID = {params.id}/>
+     <Form charger={charger}/>
     </main>
   );
 }

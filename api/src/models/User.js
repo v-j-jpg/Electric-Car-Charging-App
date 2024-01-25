@@ -45,12 +45,12 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    carBatteryPercentage: {
+    batteryPercentage: {
         type: Number,
         required: false
     },
-    gender: {
-        type: String,
+    batteryCapacity: {
+        type: Number,
         required: false
     },
     image: { //Users role, but since its not posible to override nextjs-auth methods I left it as image

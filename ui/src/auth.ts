@@ -5,7 +5,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import oAuth from 'next-auth/providers/auth0';
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
-import { getUser } from '@/lib/actions'
+import { getUserByEmail } from '@/lib/data'
 
 export const { auth, signIn, signOut } = NextAuth({
     ...authConfig,
@@ -16,7 +16,7 @@ export const { auth, signIn, signOut } = NextAuth({
 
                 if (parsedCredentials.success) {
                     const { email, password } = parsedCredentials.data;
-                    const user = await getUser(email);
+                    const user = await getUserByEmail(email);
 
                     if (!user) return null;
 
@@ -27,12 +27,12 @@ export const { auth, signIn, signOut } = NextAuth({
                 console.log('Invalid credentials');
                 return null;
             },
-        }),
+        }),/*
         GoogleProvider({
             clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         }),
-        /*oAuth({
+        oAuth({
             clientId: process.env.CLIENT_ID,
             clientSecret: process.env.CLIENT_SECRET,
             domain: process.env.DOMAIN,

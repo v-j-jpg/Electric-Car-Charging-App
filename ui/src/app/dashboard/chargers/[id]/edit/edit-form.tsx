@@ -8,20 +8,11 @@ import {
   CpuChipIcon
 } from '@heroicons/react/24/outline';
 import { Button } from '@/app/button';
-import { GetChargerByID, UpdateCharger } from '@/lib/actions';
-import  Axios  from 'axios';
-import { useEffect, useState } from 'react';
+import {UpdateCharger } from '@/lib/actions';
 import { notFound } from 'next/navigation';
 
-export default  function Form({ chargerID }: { chargerID: any}) {
+export default  function Form({ charger }: { charger: any}) {
 
-const [charger,setCharger] = useState({} as any);
-
-  useEffect(() => {
-    Axios.get(`http://localhost:3001/chargers/id=${chargerID}`).then((res) => {
-      setCharger(res.data);
-    });
-  });
 if(!charger)
 {
   notFound();
@@ -98,7 +89,7 @@ const updateChargerId = UpdateCharger.bind(null, charger._id);
                 name="lat"
                 type="text"
                 placeholder="Enter the latitude"
-                defaultValue={charger?.position?.lat}
+                defaultValue={(charger?.position?.lat)}
                 className="peer block w-50 rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               />
             <GlobeAsiaAustraliaIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
@@ -112,7 +103,7 @@ const updateChargerId = UpdateCharger.bind(null, charger._id);
                 name="lng"
                 type="text"
                 placeholder="Enter the longitude"
-                defaultValue={charger?.position?.lng}
+                defaultValue={(charger?.position?.lng)}
                 className="peer block w-50 rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 
               />

@@ -1,27 +1,21 @@
 const mongoose = require("mongoose");
 
-//A frozen object can no longer be changed;
-const Status = Object.freeze({
-    Available: 'available',
-    Occupied: 'occupied',
-    Preparing: 'preparing',
-    Faulted: 'faulted'
-  });
-
 const SessionSchema = new mongoose.Schema({
-    userID:{
+    user:{
         type: String,
         required: true
     },
-    chargerID:{
+    id:{
         type: String,
         required: true
     },
-    status: {
-        type: String,
-        enum: Object.values(Status),
-        default: 'occupied',
-        required: false
+    startTime: {
+        type: Date,
+        required: true
+    },
+    endTime: {
+        type: Date,
+        required: true
     },
     connected_at: { 
         type: Date, default: new Date(), required: false
