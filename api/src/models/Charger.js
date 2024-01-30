@@ -39,7 +39,7 @@ const ChargerSchema = new mongoose.Schema({
 
 ChargerSchema.virtual('full_position').get(function() {
     return this.position.lat + '\n ' + this.position.lng;
-  });
+});
 
 const ChargerModel = mongoose.model("chargers", ChargerSchema)
 module.exports = ChargerModel;

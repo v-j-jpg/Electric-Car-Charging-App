@@ -1,0 +1,284 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Power-Charger-API",
+    "dateExported": "2024-01-29T14:02:04.156Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "d56bbf74-da4e-4077-b34b-f8fcc61260fc",
+            "name": "Users",
+            "containerId": "",
+            "created": "2024-01-24T12:43:50.391Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "4ed02671-c2ee-4f3f-9564-56b3596b4c55",
+            "name": "Chargers",
+            "containerId": "",
+            "created": "2024-01-24T12:49:23.395Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "1e8d1be7-ba39-47bc-af35-f78922534bd4",
+            "name": "Charging Simulation",
+            "containerId": "",
+            "created": "2024-01-24T13:19:39.804Z",
+            "sortNum": 30000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "3bc6f71c-beee-44d0-965e-39e778b449bb",
+            "colId": "82e8b521-904c-453f-b572-b9becbef4268",
+            "containerId": "d56bbf74-da4e-4077-b34b-f8fcc61260fc",
+            "name": "Delete User",
+            "url": "http://localhost:3001/api/users/65b105e4c97293bccbdb60c9",
+            "method": "DELETE",
+            "sortNum": 10000,
+            "created": "2024-01-24T12:23:41.601Z",
+            "modified": "2024-01-24T13:18:44.051Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "787aa32d-5323-4e18-a8f9-8fa59026fb3c",
+            "colId": "82e8b521-904c-453f-b572-b9becbef4268",
+            "containerId": "d56bbf74-da4e-4077-b34b-f8fcc61260fc",
+            "name": "Get User By Id",
+            "url": "http://localhost:3001/api/users/65959c841c728a2203f3b171",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-01-24T12:22:57.618Z",
+            "modified": "2024-01-24T13:18:55.873Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "48cfb438-8366-47a4-ab2f-d5beece32675",
+            "colId": "82e8b521-904c-453f-b572-b9becbef4268",
+            "containerId": "d56bbf74-da4e-4077-b34b-f8fcc61260fc",
+            "name": "Create a User",
+            "url": "http://localhost:3001/api/users/",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2024-01-03T17:03:40.522Z",
+            "modified": "2024-01-24T12:40:02.072Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n      \"email\": \"gordonramsy19@example.com\",\n      \"age\": 23,\n      \"username\": \"gordon16\",\n      \"gender\" : \"male\",\n      \"password\": \"gordon\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "dc534d57-4457-4c4f-b75c-6198c0655f1c",
+            "colId": "82e8b521-904c-453f-b572-b9becbef4268",
+            "containerId": "d56bbf74-da4e-4077-b34b-f8fcc61260fc",
+            "name": "Get Users",
+            "url": "http://localhost:3001/api/users",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2024-01-03T17:03:30.134Z",
+            "modified": "2024-01-24T12:22:38.992Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "30019c5a-458b-45f0-b839-2e2670993918",
+            "colId": "82e8b521-904c-453f-b572-b9becbef4268",
+            "containerId": "d56bbf74-da4e-4077-b34b-f8fcc61260fc",
+            "name": "Update User",
+            "url": "http://localhost:3001/api/users/65b10632c97293bccbdb60cc",
+            "method": "PUT",
+            "sortNum": 50000,
+            "created": "2024-01-24T12:44:06.815Z",
+            "modified": "2024-01-24T13:19:14.962Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"first\": \"Gordon\",\n    \"last\": \"Ramsey\",\n  \"carInfo\": \"Mercedes 1234\", \n  \"carBatteryPercentage\": 50\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "c7741063-d42f-46f6-8c56-4b75cbd55c27",
+            "colId": "82e8b521-904c-453f-b572-b9becbef4268",
+            "containerId": "4ed02671-c2ee-4f3f-9564-56b3596b4c55",
+            "name": "Get All Chargers",
+            "url": "http://localhost:3001/api/chargers",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2024-01-24T12:49:36.475Z",
+            "modified": "2024-01-24T12:49:53.234Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "a4a742ca-1f1a-4a15-a3ac-581d62a818de",
+            "colId": "82e8b521-904c-453f-b572-b9becbef4268",
+            "containerId": "4ed02671-c2ee-4f3f-9564-56b3596b4c55",
+            "name": "Get charger By ID",
+            "url": "http://localhost:3001/api/chargers/659fde67ee735048efd6c14f",
+            "method": "GET",
+            "sortNum": 70000,
+            "created": "2024-01-24T12:50:14.020Z",
+            "modified": "2024-01-24T18:08:57.015Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "fd243947-9ac9-4055-9966-9d56639e349d",
+            "colId": "82e8b521-904c-453f-b572-b9becbef4268",
+            "containerId": "4ed02671-c2ee-4f3f-9564-56b3596b4c55",
+            "name": "Create Charger",
+            "url": "http://localhost:3001/api/chargers/",
+            "method": "POST",
+            "sortNum": 80000,
+            "created": "2024-01-24T12:57:40.009Z",
+            "modified": "2024-01-24T13:01:23.147Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n      \"name\": \"ChargerTestDB1\",\n      \"power\": 50,\n      \"type\": \"6 pins\",\n        \"lat\": 45.284371184005714,\n        \"lng\": 20.30488938727142\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "31d93313-d654-4849-a26d-6cf68d36e321",
+            "colId": "82e8b521-904c-453f-b572-b9becbef4268",
+            "containerId": "4ed02671-c2ee-4f3f-9564-56b3596b4c55",
+            "name": "Update Charge",
+            "url": "http://localhost:3001/api/chargers/65b109f82ed3b2a44b366cea",
+            "method": "PUT",
+            "sortNum": 90000,
+            "created": "2024-01-24T13:01:47.168Z",
+            "modified": "2024-01-24T13:05:26.128Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n        \"lat\": 45.284371184005754,\n        \"lng\": 20.30488938727131\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "6c6ca520-4f0b-486d-975a-c4ee103547c7",
+            "colId": "82e8b521-904c-453f-b572-b9becbef4268",
+            "containerId": "4ed02671-c2ee-4f3f-9564-56b3596b4c55",
+            "name": "Delete Chargers",
+            "url": "http://localhost:3001/api/chargers/65b109ab2512d04302ad85e7",
+            "method": "DELETE",
+            "sortNum": 100000,
+            "created": "2024-01-24T13:06:58.361Z",
+            "modified": "2024-01-24T13:07:24.351Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "ec73f566-99b9-439d-97ec-b788ed1bc992",
+            "colId": "82e8b521-904c-453f-b572-b9becbef4268",
+            "containerId": "4ed02671-c2ee-4f3f-9564-56b3596b4c55",
+            "name": "Search Chargers - Filter Chargers API",
+            "url": "http://localhost:3001/api/chargers/search",
+            "method": "POST",
+            "sortNum": 110000,
+            "created": "2024-01-24T13:13:30.173Z",
+            "modified": "2024-01-24T13:14:55.127Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"offset\": 0,\n  \"query\": \"lidl\",\n  \"ITEMS_PER_PAGE\": 6\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "cdb01228-cb7d-43a1-b169-13957c47b9b6",
+            "colId": "82e8b521-904c-453f-b572-b9becbef4268",
+            "containerId": "4ed02671-c2ee-4f3f-9564-56b3596b4c55",
+            "name": "Count Chargers - Paggination API",
+            "url": "http://localhost:3001/api/chargers/count",
+            "method": "POST",
+            "sortNum": 120000,
+            "created": "2024-01-24T13:15:16.101Z",
+            "modified": "2024-01-24T13:15:51.957Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"query\": \"lidl\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "b8df0fdf-2cde-482b-b82c-4cbd531f94b2",
+            "colId": "82e8b521-904c-453f-b572-b9becbef4268",
+            "containerId": "1e8d1be7-ba39-47bc-af35-f78922534bd4",
+            "name": "Connect Charger",
+            "url": "",
+            "method": "GET",
+            "sortNum": 140000,
+            "created": "2024-01-24T13:20:10.600Z",
+            "modified": "2024-01-24T13:20:10.600Z",
+            "headers": []
+        },
+        {
+            "_id": "de187f4b-263e-48e8-8c8d-5aea9189d0a3",
+            "colId": "82e8b521-904c-453f-b572-b9becbef4268",
+            "containerId": "d56bbf74-da4e-4077-b34b-f8fcc61260fc",
+            "name": "Get User By Email",
+            "url": "http://localhost:3001/api/users/email",
+            "method": "POST",
+            "sortNum": 140000,
+            "created": "2024-01-24T13:29:11.275Z",
+            "modified": "2024-01-24T14:35:55.252Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"jo9@gmail.com\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "ac4ebb2f-2505-4aa5-95a2-62d6ee27f8f3",
+            "colId": "82e8b521-904c-453f-b572-b9becbef4268",
+            "containerId": "1e8d1be7-ba39-47bc-af35-f78922534bd4",
+            "name": "Check Availability",
+            "url": "",
+            "method": "GET",
+            "sortNum": 150000,
+            "created": "2024-01-24T19:37:23.694Z",
+            "modified": "2024-01-24T19:37:23.694Z",
+            "headers": []
+        }
+    ]
+}

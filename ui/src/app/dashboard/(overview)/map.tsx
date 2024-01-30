@@ -1,5 +1,4 @@
 'use client'
-
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { APIProvider, Map, AdvancedMarker, Pin, InfoWindow, useMapsLibrary, useMap, useMarkerRef, useAdvancedMarkerRef, Marker } from '@vis.gl/react-google-maps'
 import { Card, CardActions, CardContent, Divider, FormControlLabel, FormGroup, Grid, List, ListItemText, Switch, Typography, tableBodyClasses } from '@mui/material';
@@ -88,9 +87,9 @@ export default function MapComponent({ listOfChargers: listOfChargers }) {
         //Initialization of the Services
         useEffect(() => {
             if (!routesLibrary || !map) return;
+            setDistanceService(new routesLibrary.DistanceMatrixService());
             setDirectionService(new routesLibrary.DirectionsService());
             setDirectionRenderer(new routesLibrary.DirectionsRenderer({ map }));
-            setDistanceService(new routesLibrary.DistanceMatrixService());
         }, [routesLibrary, map])
 
         //Find the closest charger by driving 
@@ -110,7 +109,7 @@ export default function MapComponent({ listOfChargers: listOfChargers }) {
             })
         }, [distanceService])
 
-        //Merge destination addresses with their distance and duation
+        //Merge destination addresses with their distance and duration
         let destinations = destinationAddresses.map((address, index) => ({ address: address, duration: distance[index]['duration'].text, distance: distance[index]['distance'].text }))
 
         // Sort destinations by distance
@@ -126,7 +125,7 @@ export default function MapComponent({ listOfChargers: listOfChargers }) {
 
             directionsService.route({
                 origin: currentPosition,
-                destination: destinations[0]?.address || closestCharger(geometryLibrary, currentPosition),
+                destination: (destinations[0]?.address.split(',')[0] || closestCharger(geometryLibrary, currentPosition)),
                 travelMode: google.maps.TravelMode.DRIVING,
                 drivingOptions: {
                     departureTime: new Date(Date.now()),
@@ -138,7 +137,7 @@ export default function MapComponent({ listOfChargers: listOfChargers }) {
             })
         }, [directionsService, directionsRenderer, geometryLibrary])
 
-        //Update the map with the selected route
+        // Update the map with the selected route
         useEffect(() => {
             if (!directionsRenderer) return;
             directionsRenderer.setRouteIndex(routeIndex);
@@ -223,8 +222,8 @@ export default function MapComponent({ listOfChargers: listOfChargers }) {
 
     function closestCharger(geometryLibrary, targetPosition: { lat: Number, lng: Number}) {
         return filteredChargers?.reduce(function (prev, curr) {
-            var cpos = geometryLibrary.spherical.computeDistanceBetween(targetPosition, (curr.position.lat && curr.position.lng && curr.position));
-            var ppos = geometryLibrary.spherical.computeDistanceBetween(targetPosition, (prev.position.lat && prev.position.lng && prev.position));
+            var cpos = geometryLibrary.spherical.computeDistanceBetween(targetPosition, (curr.position?.lat && curr.position?.lng && curr.position));
+            var ppos = geometryLibrary.spherical.computeDistanceBetween(targetPosition, (prev.position?.lat && prev.position?.lng && prev.position));
             return cpos < ppos ? curr : prev;
         }).position;
     }

@@ -5,8 +5,9 @@ const app = express();
 const cors = require("cors");
 const mongoose = require('mongoose');
 const mongodbUri = process.env.MONGODB_URI;
+const PORT = process.env.PORT;
 const logger = require('./src/logger/logger');
-const PORT = 3001;
+
 
 if (!mongodbUri || typeof mongodbUri !== 'string') {
   logger.error('Invalid MongoDB URI');

@@ -162,17 +162,14 @@ export async function DisconnectChargerAction(id: number) {
   revalidatePath('/dashboard/chargers');
 }
 
-export async function SimulateCharging(prevState: State, formData: FormData) {
+export async function simulateCharging(prevState: State, formData: FormData) {
   try {
-    const session = Object.fromEntries(formData.entries());
 
-    const result = await Axios.post(`${API_SERVER_URL_BASE}/session/reserve`, session);
-    console.log(result.data)
+    const result = await Axios.post(`${API_SERVER_URL_BASE}/session/reserve`, Object.fromEntries(formData.entries()));
 
     if (!result.data.success) {
       return {
-        errors: `${result.data.message}`,
-        message: 'Failed.',
+        message: `${result.data.message}`
       };
     }
 
@@ -188,7 +185,7 @@ export async function SimulateCharging(prevState: State, formData: FormData) {
 
 //#region User
 const FormSchemaUser = z.object({
-  first: z.string({ required_error: 'Please enter a name.' }),
+  first: z.string(),
   last: z.string(),
   username: z.coerce.string(),
   password: z.any(),
@@ -206,7 +203,7 @@ export async function createUser(prevState: State, formData: FormData) {
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to create a User.',
+      message: 'Missing Fields. Failed to create a user.',
     };
   }
 

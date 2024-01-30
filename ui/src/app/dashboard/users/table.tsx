@@ -64,7 +64,7 @@ export default function CustomersTable({ session, listOfUsers }:
                       </div>
                     </div>
                     <div className="pt-4 text-sm">
-                      <p>{customer.batteryCapacity}</p>
+                      <p>{customer.batteryCapacity}<span className='text-gray-300'> mAh</span></p>
                     </div>
                   </div>
                 ))}
@@ -118,7 +118,7 @@ export default function CustomersTable({ session, listOfUsers }:
                         {customer.carInfo}
                       </td>
                       <td className="whitespace-nowrap bg-white px-4 py-5 text-sm group-first-of-type:rounded-md group-last-of-type:rounded-md">
-                        {customer.batteryCapacity}
+                        {customer.batteryCapacity}<span className='text-gray-300'> mAh</span>
                       </td>
                       <td className={clsx('whitespace-nowrap bg-white px-4 py-5 text-m uppercase ',
                         {

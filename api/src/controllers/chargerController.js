@@ -14,7 +14,7 @@ const getAllChargers = async (req, res) => {
 
 const getChargerById = async (req, res) => {
     try {
-        const id  = req.params.id;
+        const id = req.params.id;
         const charger = await ChargerModel.findById(id);
         console.log(charger)
 
@@ -45,9 +45,13 @@ const createCharger = async (req, res) => {
 
 const updateChargerById = async (req, res) => {
     try {
-        const  id  = (req.params.id);
+        const id = (req.params.id);
         const charger = { ...req.body };
-        charger.position = { lat: charger.lat, lng: charger.lng};
+
+        if (charger.lat && charger.lng) {
+            charger.position = { lat: charger.lat, lng: charger.lng };
+        }
+
 
         const updatedCharger = await ChargerModel.findByIdAndUpdate(id, charger, { new: true });
 
@@ -64,7 +68,7 @@ const updateChargerById = async (req, res) => {
 
 const deleteChargerById = async (req, res) => {
     try {
-        const  id = req.params.id;
+        const id = req.params.id;
         const deletedCharger = await ChargerModel.findByIdAndDelete(id);
 
         if (!deletedCharger) {
@@ -77,9 +81,9 @@ const deleteChargerById = async (req, res) => {
     }
 };
 
-const getChargersByFilter = async (req, res) => { 
+const getChargersByFilter = async (req, res) => {
     let { query, offset, ITEMS_PER_PAGE } = req.body;
-   
+
     // Filter for case-insensitive partial matching on name and type
     let filter = {
         $or: [
@@ -90,9 +94,9 @@ const getChargersByFilter = async (req, res) => {
 
     try {
         // Query the chargers collection with the filter
-       const filteredChargers = await ChargerModel.find(filter).skip(offset).limit(ITEMS_PER_PAGE);
-       res.json(filteredChargers)
-        
+        const filteredChargers = await ChargerModel.find(filter).skip(offset).limit(ITEMS_PER_PAGE);
+        res.json(filteredChargers)
+
     }
     catch (error) {
         logger.error('Error occuped:', error);
@@ -110,8 +114,8 @@ const getChargerCount = async (req, res) => {
         ],
     };
     try {
-        await ChargerModel.countDocuments(filter).then(function (count) { 
-            res.json(count) 
+        await ChargerModel.countDocuments(filter).then(function (count) {
+            res.json(count)
         })
     }
     catch (error) {

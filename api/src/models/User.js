@@ -21,13 +21,13 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: false,
         unique: true,
-        /*lowercase: true,
+        lowercase: true,
         trim: true,
         validate: [validateEmail, 'Please fill a valid email address'],
         match: [
           /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
           'Please fill a valid email address'
-        ]*/
+        ]
       },
     age: {
         type: Number,

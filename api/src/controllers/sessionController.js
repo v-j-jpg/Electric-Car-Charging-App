@@ -10,40 +10,45 @@ const reserveCharger = async (req, res) => {
     const { id, startTime, endTime, user } = req.body;
     const timeslot = await checkAvailability(id, startTime, endTime);
 
-    console.log(timeslot)
-
     if (timeslot && !timeslot.available) {
-      console.log("SS")
+
+      const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        timeZoneName: 'short',
+      };
 
       res.json({
         success: false,
         message: `Charger is already reserved for that timeslot. Please choose another timeslot. Conflicting reservation is between:
-         ${timeslot?.conflictingReservations[0]?.startTime.toISOString()} -  ${timeslot?.conflictingReservations[0]?.endTime.toISOString()}`
+         ${new Intl.DateTimeFormat('sr-SR', options).format(timeslot?.conflictingReservations[0]?.startTime,)} -  ${ new Intl.DateTimeFormat('sr-SR', options).format(timeslot?.conflictingReservations[0]?.endTime)}`
+      });
+    } else {
+
+      // Create a new session
+      const newSession = new SessionModel({
+        id,
+        user,
+        startTime,
+        endTime,
+      });
+
+      // Save the session to the database
+      await newSession.save();
+
+      // Simulate charging, schedule the start and the end time
+      await startCharging(startTime, endTime, id, user)
+      await stopCharging(endTime, id)
+
+      res.json({
+        success: true,
+        message: "Reservation is successfull"
       });
     }
-
-    // Create a new session
-    const newSession = new SessionModel({
-      id,
-      user,
-      startTime,
-      endTime,
-    });
-
-    console.log(newSession)
-    // Save the session to the database
-    await newSession.save();
-
-    // Simulate charging, schedule the start and the end time
-    await startCharging(startTime, endTime, id, user)
-    await stopCharging(endTime, id)
-
-    console.log("ovde nastaje problem")
-
-    res.json({
-      success: true,
-      message: "Reservation is successfull"
-    });
 
 
   } catch (error) {
@@ -53,7 +58,6 @@ const reserveCharger = async (req, res) => {
 }
 
 async function startCharging(startTime, endTime, id, user) {
-  console.log("START CHARGING", id, user)
   try {
 
     schedule.scheduleJob(new Date(startTime), async () => {
@@ -85,9 +89,8 @@ async function stopCharging(endTime, id, user = null) {
 
       const deletedCharger = await SessionModel.findOneAndDelete({ id });
 
-      // If needed, updated the user battery 
-      if(user) await UserModel.findByIdAndUpdate(user._id, { batteryPercentage: 100});
-    
+      // If needed, update the user battery 
+      if (user) await UserModel.findByIdAndUpdate(user._id, { batteryPercentage: 100 });
 
       // After N ms, update the database
       logger.info(`Charging completed at: ${endTime}`);
@@ -100,7 +103,6 @@ async function stopCharging(endTime, id, user = null) {
 
 async function checkAvailability(id, startTime, endTime) {
 
-  console.log(id, startTime, endTime)
   try {
 
     // Check for existing reservations for the specified charger and time range
@@ -135,12 +137,12 @@ const connectCharger = async (req, res) => {
 
   try {
 
-    const updatedCharger = await ChargerModel.findByIdAndUpdate(id, {status: status, user: email}, { new: true });   
-    
+    const updatedCharger = await ChargerModel.findByIdAndUpdate(id, { status: status, user: email }, { new: true });
+
     if (!updatedCharger) {
       return res.status(404).json({ error: 'Charger not found' });
     }
-    const user = await UserModel.findOne({email});
+    const user = await UserModel.findOne({ email });
 
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
@@ -150,8 +152,7 @@ const connectCharger = async (req, res) => {
     const startTime = new Date();
     const chargingTime = calculateChargingTime(user.batteryCapacity, user.batteryPercentage, updatedCharger.power);
     const endTime = new Date(new Date().getTime() + chargingTime * 60 * 60 * 1000); //adding ms to the current time
-    console.log(endTime)
-    console.log(chargingTime)
+
     // Create a new session
     const newSession = new SessionModel({
       id,
@@ -160,7 +161,6 @@ const connectCharger = async (req, res) => {
       endTime,
     });
 
-    console.log(newSession)
     // Save the session to the database
     await newSession.save();
 
@@ -175,15 +175,17 @@ const connectCharger = async (req, res) => {
 }
 
 function calculateChargingTime(batteryCapacity, initialBatteryPercentage, chargingPower) {
-  //Simplified calculation and actual charging time may vary due to factors like charging efficiency, temperature, and charging curve characteristics.
-  if (chargingPower <= 0) {
-    throw new Error('Charging power must be greater than 0.');
+  //Simplified calculation and actual charging time may vary due to factors like charging efficiency, temperature, and charging curve characteristics. 
+  
+  if (chargingPower <= 0 || batteryCapacity<=0 || initialBatteryPercentage<=0) {
+    throw new Error('Charging information must be greater than 0.');
   }
 
-  initialBatteryPercentage *=(1/100); // ex. 20% = 0.2
+  initialBatteryPercentage *= (1 / 100); // ex. 20% = 0.2
+  chargingPower *= 1000; // Charging power is in kW
 
   // return the time in hours
-  return (batteryCapacity * (1-initialBatteryPercentage) / (chargingPower * 1000)); //Charging power is in kW
+  return (batteryCapacity * (1 - initialBatteryPercentage) / (chargingPower));
 }
 
 module.exports = {

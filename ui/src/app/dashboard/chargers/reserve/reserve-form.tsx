@@ -3,26 +3,23 @@
 import Link from 'next/link';
 import {
     Battery50Icon,
-    CalendarDaysIcon,
-    CheckIcon,
     ClockIcon,
-    CurrencyDollarIcon,
     UserCircleIcon,
 } from '@heroicons/react/24/outline';
 import { Button } from '@/app/button';
 import { useState } from 'react';
-import { SimulateCharging } from '@/lib/actions'
+import { simulateCharging } from '@/lib/actions'
 import { useFormState } from 'react-dom';
+import { string } from 'zod';
+import Alert from '@mui/material/Alert';
 
-export default function Form({ user, listOfChargers }: { user: { email: string }, listOfChargers: [] }) {
+export default function Form({ user, listOfChargers }: { user: any , listOfChargers: [] }) {
 
-    const [charger, setCharger] = useState({} as any);
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
-
     const [error, setError] = useState('');
 
-    //const initialState = { message: null, errors: {} }
+
 
     const handleStartDateChange = (event) => {
         const newStartDate = event.target.value;
@@ -60,19 +57,13 @@ export default function Form({ user, listOfChargers }: { user: { email: string }
         return `${year}-${month}-${day}T${hours}:${minutes}`;
     };
 
-    const handleChargerChange = (event) => {
-        setCharger(event.target.value);
-    };
-
     const isButtonDisabled = !!error; // Convert error to a boolean
 
-    const initialState = { message: null, errors: {} }
-    const [state, dispatch] = useFormState(SimulateCharging, initialState);
-    console.log(state.errors)
-    //const simulateChargingId = SimulateCharging.bind(null, charger._id);
-    //const [state, dispatch] = useFormState(simulateChargingId, initialState);
+    const initialState = { message: '' }
+    const [state, formAction] = useFormState(simulateCharging, initialState);
+
     return (
-        <form action={dispatch}>
+        <form action={formAction}>
             <div className="w-full md:w-1/2 rounded-md bg-gray-50 p-4 md:p-6">
                 {/* Chargers Name */}
                 <div className="mb-4">
@@ -84,7 +75,6 @@ export default function Form({ user, listOfChargers }: { user: { email: string }
                             id="id"
                             name="id"
                             className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                            onSelect={handleChargerChange}
                             required
                         >
                             <option value="" disabled>
@@ -99,7 +89,6 @@ export default function Form({ user, listOfChargers }: { user: { email: string }
                         <Battery50Icon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
                     </div>
                 </div>
-
                 {/* Start Time */}
                 <div className="mb-4">
                     <label htmlFor="startTime" className="mb-2 block text-sm font-medium">
@@ -121,7 +110,6 @@ export default function Form({ user, listOfChargers }: { user: { email: string }
                         </div>
                     </div>
                 </div>
-
                 {/* End Time */}
                 <div className="mb-4">
                     <label htmlFor="endTime" className="mb-2 block text-sm font-medium">
@@ -141,15 +129,11 @@ export default function Form({ user, listOfChargers }: { user: { email: string }
                             />
                             <ClockIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
                         </div>
-                        <div id="timeslot-error" aria-live="polite" aria-atomic="true">
-                            {(state?.errors && Array.isArray(state?.errors) && state.errors.map((err) => <p className="mt-2 text-sm text-red-500" key={err}>
-                                {err}
-                            </p>))} 
-
-
-                        </div>
                     </div>
                 </div>
+                <div id="timeslot-error" aria-live="polite" aria-atomic="true" >
+                            {state?.message && <Alert severity="error"> {state?.message} </Alert>} 
+                        </div>
                 {/* User*/}
                 <div className="mb-4">
                     <label htmlFor="user" className="mb-2 block text-sm font-medium">
@@ -177,7 +161,7 @@ export default function Form({ user, listOfChargers }: { user: { email: string }
                 >
                     Cancel
                 </Link>
-                <Button className='bg-green-500 hover:bg-green-200' type="submit">Create a reservation</Button>
+                <Button className='bg-green-500 hover:bg-green-200' disabled={isButtonDisabled} type="submit">Create a reservation</Button>
             </div>
         </form >
     );

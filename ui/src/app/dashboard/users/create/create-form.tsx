@@ -5,15 +5,10 @@ import {
   UserIcon,
   UserGroupIcon,
   CalendarDaysIcon,
-  BoltIcon, 
-  GlobeAsiaAustraliaIcon,
-  GlobeAmericasIcon,
-  CpuChipIcon, 
   LockClosedIcon,
   AtSymbolIcon,
-  WrenchIcon,
   TruckIcon,
-  Battery50Icon, 
+  Battery50Icon,
 } from '@heroicons/react/24/outline';
 import React, { useState } from 'react';
 import Axios from 'axios';
@@ -39,34 +34,34 @@ export default function Form() {
         {/* Name */}
         <div className="mb-4">
           <label htmlFor="first" className="mb-2 block text-sm font-medium">
-           First Name
+            First Name
           </label>
           <div className="relative">
-          <input
-                id="first"
-                name="first"
-                type="text"
-                placeholder="Enter your first name"
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                onChange={handleChange}
-              />
+            <input
+              id="first"
+              name="first"
+              type="text"
+              placeholder="Enter your first name"
+              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              onChange={handleChange}
+            />
             <UserIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
         </div>
         {/* Last Name */}
         <div className="mb-4">
           <label htmlFor="last" className="mb-2 block text-sm font-medium">
-           Last Name
+            Last Name
           </label>
           <div className="relative">
-          <input
-                id="last"
-                name="last"
-                type="text"
-                placeholder="Enter your last name"
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                onChange={handleChange}
-              />
+            <input
+              id="last"
+              name="last"
+              type="text"
+              placeholder="Enter your last name"
+              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              onChange={handleChange}
+            />
             <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
         </div>
@@ -91,7 +86,7 @@ export default function Form() {
           </div>
         </div>
 
-      {/*Password */}
+        {/*Password */}
         <div className="mb-4">
           <label htmlFor="password" className="mb-2 block text-sm font-medium">
             Password
@@ -111,20 +106,20 @@ export default function Form() {
           </div>
         </div>
 
-         {/* Age */}
-         <div className="mb-4">
+        {/* Age */}
+        <div className="mb-4">
           <label htmlFor="age" className="mb-2 block text-sm font-medium">
             Age
           </label>
           <div className="relative">
-          <input
-                id="age"
-                name="age"
-                type="Number"
-                placeholder="(Optional) Enter your age..."
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                onChange={handleChange}
-              />
+            <input
+              id="age"
+              name="age"
+              type="Number"
+              placeholder="(Optional) Enter your age..."
+              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              onChange={handleChange}
+            />
             <CalendarDaysIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
         </div>
@@ -147,27 +142,8 @@ export default function Form() {
             </div>
           </div>
         </div>
-         {/*  batteryCapacity */}
-         <div className="mb-4">
-          <label htmlFor="batteryCapacity" className="mb-2 block text-sm font-medium">
-            batteryCapacity
-          </label>
-          <div className="relative mt-2 rounded-md">
-            <div className="relative">
-              <input
-                id="batteryCapacity"
-                name="batteryCapacity"
-                type="text"
-                placeholder="Enter your battery capacity..."
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                onChange={handleChange}
-              />
-              <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
-            </div>
-          </div>
-        </div>
-         {/*  Car Info */}
-         <div className="mb-4">
+        {/*  Car Info */}
+        <div className="mb-4">
           <label htmlFor="carInfo" className="mb-2 block text-sm font-medium">
             Car Name
           </label>
@@ -185,8 +161,27 @@ export default function Form() {
             </div>
           </div>
         </div>
-         {/*  Car Info */}
-         <div className="mb-4">
+        {/*  Battery Capacity */}
+        <div className="mb-4">
+          <label htmlFor="batteryCapacity" className="mb-2 block text-sm font-medium">
+            batteryCapacity
+          </label>
+          <div className="relative mt-2 rounded-md">
+            <div className="relative">
+              <input
+                id="batteryCapacity"
+                name="batteryCapacity"
+                type="text"
+                placeholder="Enter your battery capacity in milliampere-hours (mAh)"
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                onChange={handleChange}
+              />
+              <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            </div>
+          </div>
+        </div>
+        {/*  Car Battery Percantage */}
+        <div className="mb-4">
           <label htmlFor="batteryPercentage" className="mb-2 block text-sm font-medium">
             Car Battery Percentage
           </label>

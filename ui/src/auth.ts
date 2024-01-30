@@ -27,11 +27,11 @@ export const { auth, signIn, signOut } = NextAuth({
                 console.log('Invalid credentials');
                 return null;
             },
-        }),/*
+        }),
         GoogleProvider({
             clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        }),
+        }),/*
         oAuth({
             clientId: process.env.CLIENT_ID,
             clientSecret: process.env.CLIENT_SECRET,

@@ -84,7 +84,6 @@ export default function Form() {
             </div>
           </div>
         </div>
-
         {/* Charger Type */}
         <div className="mb-4">
           <label htmlFor="charger" className="mb-2 block text-sm font-medium">
